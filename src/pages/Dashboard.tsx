@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
                                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                                         <XAxis dataKey="date" tick={{ fontSize: 11 }} tickFormatter={(v) => new Date(v).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} />
                                         <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v, currency)} />
-                                        <RechartsTooltip formatter={(value: number) => formatCurrency(value, currency)} labelFormatter={(v) => new Date(v).toLocaleDateString('id-ID')} />
+                                        <RechartsTooltip formatter={(value: number) => [formatCurrency(value, currency)]} labelFormatter={(v) => new Date(v).toLocaleDateString('id-ID')} />
                                         <Line type="monotone" dataKey="totalCash" stroke="#1890ff" strokeWidth={2} dot={{ r: 3 }} />
                                     </LineChart>
                                 </ResponsiveContainer>

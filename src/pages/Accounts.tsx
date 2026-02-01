@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Space, Modal, Form, Input, Select, message, Typography, Tag, Popconfirm, Avatar } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined, BankOutlined, WalletOutlined, StockOutlined, UserOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined, BankOutlined, WalletOutlined, StockOutlined } from '@ant-design/icons';
 import api from '../apiClient';
 import { formatCurrency } from '../utils/format';
 
