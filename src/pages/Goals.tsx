@@ -12,7 +12,7 @@ const { Meta } = Card;
 const Goals: React.FC = () => {
     const [goals, setGoals] = useState([]);
     const [accounts, setAccounts] = useState([]);
-    const [loading, setLoading] = useState(false);
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [form] = Form.useForm();
@@ -21,7 +21,6 @@ const Goals: React.FC = () => {
     const currency = user.currency || 'IDR';
 
     const fetchData = async () => {
-        setLoading(true);
         try {
             const [goalsRes, accountsRes] = await Promise.all([
                 api.get('/goals'),
@@ -31,8 +30,6 @@ const Goals: React.FC = () => {
             setAccounts(accountsRes.data);
         } catch (error) {
             message.error('Failed to fetch data');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -53,7 +50,7 @@ const Goals: React.FC = () => {
     const handleEdit = (record: any) => {
         setEditingId(record.id);
         const accountId = record.accountId || undefined;
-        const linkedAccount = accountId ? accounts.find((a: any) => a.id === accountId) : null;
+        const linkedAccount: any = accountId ? accounts.find((a: any) => a.id === accountId) : null;
         const currentAmount = linkedAccount ? linkedAccount.balance : record.currentAmount;
         form.setFieldsValue({
             ...record,
@@ -225,7 +222,7 @@ const Goals: React.FC = () => {
                             allowClear
                             placeholder="Select an account"
                             onChange={(value) => {
-                                const acc = value ? accounts.find((a: any) => a.id === value) : null;
+                                const acc: any = value ? accounts.find((a: any) => a.id === value) : null;
                                 if (acc) {
                                     form.setFieldValue('currentAmount', acc.balance);
                                 }

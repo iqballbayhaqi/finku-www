@@ -3,7 +3,7 @@ import {
   Table, Button, Space, Modal, Form, Input, Select, message, 
   Card, Typography, Popconfirm, Tag, Row, Col, DatePicker, Statistic 
 } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons';
 import api from '../apiClient';
 import { formatCurrency } from '../utils/format';
 import dayjs from 'dayjs';
