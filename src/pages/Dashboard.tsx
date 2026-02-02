@@ -43,7 +43,11 @@ const Dashboard: React.FC = () => {
 
     if (loading) return <div>Loading...</div>;
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+    const COLORS = [
+        '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', 
+        '#B088F9', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
+        '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB', '#E74C3C'
+    ];
 
     const getHealthColor = (score: number) => {
         if (score >= 80) return '#52c41a';
