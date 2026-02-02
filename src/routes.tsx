@@ -10,17 +10,29 @@ import Debts from './pages/Debts';
 import Accounts from './pages/Accounts';
 import Settings from './pages/Settings';
 import PlannedExpenses from './pages/PlannedExpenses';
+import LandingPage from './pages/LandingPage';
+import NotFound from './pages/NotFound';
 import MainLayout from './layouts/MainLayout';
 import ProtectedRoute from './layouts/ProtectedRoute';
+import GuestRoute from './layouts/GuestRoute';
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
+    element: <GuestRoute />,
+    children: [
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/register',
+        element: <Register />,
+      },
+      {
+        path: '/',
+        element: <LandingPage />,
+      },
+    ],
   },
   {
     path: '/',
@@ -64,4 +76,9 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+
 ]);

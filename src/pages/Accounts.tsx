@@ -176,6 +176,22 @@ const Accounts: React.FC = () => {
                     showTotal: (total) => `Total ${total} items`,
                     onChange: (page, pageSize) => setPagination(prev => ({ ...prev, current: page, pageSize: pageSize || prev.pageSize }))
                 }}
+                summary={() => {
+                    const totalBalance = accounts.reduce((acc, curr: any) => acc + (Number(curr.balance) || 0), 0);
+                    return (
+                        <Table.Summary.Row style={{ background: '#fafafa' }}>
+                            <Table.Summary.Cell index={0} colSpan={2}>
+                                <div style={{ textAlign: 'right', paddingRight: 16 }}><strong>Total All Accounts:</strong></div>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={2}>
+                                <Typography.Text strong>
+                                    {formatCurrency(totalBalance, currency)}
+                                </Typography.Text>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={3} colSpan={2} />
+                        </Table.Summary.Row>
+                    );
+                }}
             />
 
             <Modal
