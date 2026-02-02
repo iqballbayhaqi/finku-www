@@ -79,7 +79,7 @@ const LandingPage: React.FC = () => {
             fontWeight: 'bold',
             fontSize: '18px'
           }}>F</div>
-          <Title level={4} style={{ margin: 0, color: '#0050b3' }}>Finku</Title>
+          <Title level={4} style={{ margin: 0, color: '#0050b3' }}>Finnan</Title>
         </div>
         <Space>
           {token ? (
@@ -143,7 +143,7 @@ const LandingPage: React.FC = () => {
                 </motion.div>
                 <motion.div variants={itemVariants}>
                   <Paragraph style={{ fontSize: '18px', color: '#666', marginBottom: '32px', maxWidth: '480px' }}>
-                    Finku helps you track expenses, budget effectively, and reach your financial goals with ease. Simple, secure, and smart.
+                    Finnan helps you track expenses, budget effectively, and reach your financial goals with ease. Simple, secure, and smart.
                   </Paragraph>
                 </motion.div>
                 <motion.div variants={itemVariants}>
@@ -240,7 +240,7 @@ const LandingPage: React.FC = () => {
       <div style={{ padding: '100px 24px', background: '#fff' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <Title level={2}>Why Choose Finku?</Title>
+            <Title level={2}>Why Choose Finnan?</Title>
             <Text type="secondary" style={{ fontSize: '18px' }}>Everything you need to manage your personal finances</Text>
           </div>
           
@@ -287,8 +287,8 @@ const LandingPage: React.FC = () => {
 
       {/* Footer */}
       <div style={{ background: '#001529', color: 'rgba(255,255,255,0.65)', padding: '64px 24px', textAlign: 'center' }}>
-        <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>Finku</Title>
-        <Text style={{ color: 'inherit' }}>© 2026 Finku. All rights reserved.</Text>
+        <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>Finnan</Title>
+        <Text style={{ color: 'inherit' }}>© 2026 Finnan. All rights reserved.</Text>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { PlusOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icon
 import api from '../apiClient';
 import { formatCurrency } from '../utils/format';
 import dayjs from 'dayjs';
+import RichTextEditor from '../components/RichTextEditor';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -108,7 +109,7 @@ const Transactions: React.FC = () => {
             dataIndex: 'description',
             render: (text: string, record: any) => (
                 <div>
-                    <div>{text}</div>
+                    <div dangerouslySetInnerHTML={{ __html: text }} />
                     {record.debt && (
                         <Tag color="purple" style={{ fontSize: 10 }}>Link: {record.debt.personName}</Tag>
                     )}
@@ -289,7 +290,7 @@ const Transactions: React.FC = () => {
                         <Input type="number" prefix={currency === 'IDR' ? 'Rp' : '$'} />
                     </Form.Item>
                     <Form.Item name="description" label="Description" rules={[{ required: true }]}>
-                        <Input />
+                        <RichTextEditor />
                     </Form.Item>
 
                      {/* For Transfer, we might default Category or let user pick. Schema requires it. */}

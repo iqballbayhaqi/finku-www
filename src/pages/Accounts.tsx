@@ -8,7 +8,8 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const Accounts: React.FC = () => {
-    const [accounts, setAccounts] = useState([]);
+    const [accounts, setAccounts] = useState<any[]>([]);
+    const [filteredData, setFilteredData] = useState<any[]>([]); // Store filtered data
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -27,6 +28,7 @@ const Accounts: React.FC = () => {
                 api.get('/goals')
             ]);
             setAccounts(accountsRes.data);
+            setFilteredData(accountsRes.data); // Initialize filtered data
             setGoals(goalsRes.data);
         } catch (error) {
             message.error('Failed to fetch data');
@@ -91,6 +93,7 @@ const Accounts: React.FC = () => {
         {
             title: 'Account Name',
             dataIndex: 'name',
+            sorter: (a: any, b: any) => a.name.localeCompare(b.name),
             render: (text: string, record: any) => (
                 <Space>
                     <Avatar src={record.imageUrl} icon={<WalletOutlined />} />
@@ -127,6 +130,7 @@ const Accounts: React.FC = () => {
         {
             title: 'Balance',
             dataIndex: 'balance',
+            sorter: (a: any, b: any) => a.balance - b.balance,
             render: (balance: number) => formatCurrency(balance, currency),
         },
         {
@@ -173,11 +177,16 @@ const Accounts: React.FC = () => {
                     ...pagination,
                     showSizeChanger: true, 
                     pageSizeOptions: ['10', '20', '50', '100'],
-                    showTotal: (total) => `Total ${total} items`,
-                    onChange: (page, pageSize) => setPagination(prev => ({ ...prev, current: page, pageSize: pageSize || prev.pageSize }))
+                    showTotal: (total: number) => `Total ${total} items`,
+                }}
+                onChange={(pagination: any, _filters: any, _sorter: any, extra: any) => {
+                    setPagination(prev => ({ ...prev, current: pagination.current || 1, pageSize: pagination.pageSize || prev.pageSize }));
+                    if (extra.currentDataSource) {
+                        setFilteredData(extra.currentDataSource); // Update filtered data
+                    }
                 }}
                 summary={() => {
-                    const totalBalance = accounts.reduce((acc, curr: any) => acc + (Number(curr.balance) || 0), 0);
+                    const totalBalance = filteredData.reduce((acc: number, curr: any) => acc + (Number(curr.balance) || 0), 0);
                     return (
                         <Table.Summary.Row style={{ background: '#fafafa' }}>
                             <Table.Summary.Cell index={0} colSpan={2}>

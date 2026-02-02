@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         }}>
             <Card style={{ width: '100%', maxWidth: 400, margin: '0 16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
                 <div style={{ textAlign: 'center', marginBottom: 24 }}>
-                    <Title level={2}>Finku</Title>
+                    <Title level={2}>Finnan</Title>
                     <Text type="secondary">Personal Finance Manager</Text>
                 </div>
                 

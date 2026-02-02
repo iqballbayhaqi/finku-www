@@ -26,7 +26,7 @@ const Settings: React.FC = () => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `finku_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `finnan_backup_${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -104,7 +104,7 @@ const Settings: React.FC = () => {
             <Card title="Data Management" style={{ maxWidth: 800 }}>
                 <Alert
                     message="Backup Your Data"
-                    description="You can download a complete backup of your FinKu data (transactions, accounts, budgets, etc.) as a JSON file. This file can be used to restore your data later or for your own records."
+                    description="You can download a complete backup of your Finnan data (transactions, accounts, budgets, etc.) as a JSON file. This file can be used to restore your data later or for your own records."
                     type="info"
                     showIcon
                     style={{ marginBottom: 24 }}

@@ -51,7 +51,7 @@ const MainLayout: React.FC = () => {
     const menuContent = (
         <>
             <div style={{ padding: '16px', textAlign: 'center' }}>
-                <Title level={4} style={{ margin: 0, color: '#1890ff' }}>Finku</Title>
+                <Title level={4} style={{ margin: 0, color: '#1890ff' }}>Finnan</Title>
             </div>
             <Menu
                 theme="light"
@@ -95,7 +95,7 @@ const MainLayout: React.FC = () => {
                                 onClick={() => setDrawerOpen(true)}
                                 style={{ fontSize: 20, marginRight: 8 }}
                             />
-                            <Title level={4} style={{ margin: 0, color: '#1890ff', flex: 1 }}>Finku</Title>
+                            <Title level={4} style={{ margin: 0, color: '#1890ff', flex: 1 }}>Finnan</Title>
                         </>
                     )}
                     {!isMobile && (
