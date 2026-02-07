@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button, Typography, message, Alert, Upload, Modal } from 'antd';
 import { DownloadOutlined, SettingOutlined, UploadOutlined } from '@ant-design/icons';
+import api from '../apiClient';
 
 const { Title, Paragraph } = Typography;
 
@@ -10,19 +11,8 @@ const Settings: React.FC = () => {
     const handleBackup = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/backup/export', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const blob = await response.blob();
+            const response = await api.get('/backup/export', { responseType: 'blob' });
+            const blob = response.data;
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -31,7 +21,6 @@ const Settings: React.FC = () => {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-            
             message.success('Backup downloaded successfully');
         } catch (error) {
             console.error('Backup failed:', error);
@@ -56,21 +45,8 @@ const Settings: React.FC = () => {
                     okType: 'danger',
                     cancelText: 'Cancel',
                     onOk: async () => {
-                         try {
-                            const token = localStorage.getItem('token');
-                            const response = await fetch('http://localhost:3000/api/backup/restore', {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': `Bearer ${token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(json)
-                            });
-
-                            if (!response.ok) {
-                                throw new Error('Restore failed');
-                            }
-
+                        try {
+                            await api.post('/backup/restore', json);
                             message.success('Data restored successfully! Please refresh or re-login.');
                             setTimeout(() => window.location.reload(), 1500);
                         } catch (error) {
