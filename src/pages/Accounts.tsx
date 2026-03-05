@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Space, Modal, Form, Input, Select, message, Typography, Tag, Popconfirm, Avatar } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined, BankOutlined, WalletOutlined, StockOutlined } from '@ant-design/icons';
+import { useLocation } from 'react-router-dom';
 import api from '../apiClient';
 import { formatCurrency } from '../utils/format';
 
 const { Title } = Typography;
 const { Option } = Select;
+const INVESTMENT_TYPES = ['REKSADANA', 'SAHAM', 'CRYPTO'] as const;
+const NON_INVESTMENT_TYPES = ['BANK', 'E_WALLET', 'CASH', 'OTHER'] as const;
+const TYPE_LABELS: Record<string, string> = {
+    BANK: 'Bank',
+    E_WALLET: 'E-Wallet',
+    CASH: 'Cash',
+    REKSADANA: 'Reksadana',
+    SAHAM: 'Saham',
+    CRYPTO: 'Crypto',
+    OTHER: 'Other',
+};
 
 const Accounts: React.FC = () => {
+    const location = useLocation();
+    const isInvestmentMode = location.pathname === '/investments';
+    const visibleTypes: string[] = isInvestmentMode ? [...INVESTMENT_TYPES] : [...NON_INVESTMENT_TYPES];
+    const defaultType = isInvestmentMode ? 'REKSADANA' : 'CASH';
     const [accounts, setAccounts] = useState<any[]>([]);
     const [filteredData, setFilteredData] = useState<any[]>([]); // Store filtered data
     const [loading, setLoading] = useState(false);
@@ -27,8 +43,9 @@ const Accounts: React.FC = () => {
                 api.get('/accounts'),
                 api.get('/goals')
             ]);
-            setAccounts(accountsRes.data);
-            setFilteredData(accountsRes.data); // Initialize filtered data
+            const scopedAccounts = accountsRes.data.filter((account: any) => visibleTypes.includes(account.type));
+            setAccounts(scopedAccounts);
+            setFilteredData(scopedAccounts); // Initialize filtered data
             setGoals(goalsRes.data);
         } catch (error) {
             message.error('Failed to fetch data');
@@ -39,7 +56,7 @@ const Accounts: React.FC = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [isInvestmentMode]);
 
     const handleDelete = async (id: number) => {
         try {
@@ -60,6 +77,7 @@ const Accounts: React.FC = () => {
     const handleAdd = () => {
         setEditingId(null);
         form.resetFields();
+        form.setFieldsValue({ type: defaultType });
         setIsModalVisible(true);
     };
 
@@ -104,15 +122,7 @@ const Accounts: React.FC = () => {
         {
             title: 'Type',
             dataIndex: 'type',
-            filters: [
-                { text: 'Bank', value: 'BANK' },
-                { text: 'E-Wallet', value: 'E_WALLET' },
-                { text: 'Cash', value: 'CASH' },
-                { text: 'Reksadana', value: 'REKSADANA' },
-                { text: 'Saham', value: 'SAHAM' },
-                { text: 'Crypto', value: 'CRYPTO' },
-                { text: 'Other', value: 'OTHER' },
-            ],
+            filters: visibleTypes.map((type) => ({ text: TYPE_LABELS[type], value: type })),
             onFilter: (value: any, record: any) => record.type === value,
             render: (type: string, record: any) => {
                 let icon = <WalletOutlined />;
@@ -121,7 +131,7 @@ const Accounts: React.FC = () => {
                 
                 return (
                     <Space direction="vertical" size={0}>
-                        <Tag icon={icon} color="blue">{type}</Tag>
+                        <Tag icon={icon} color="blue">{TYPE_LABELS[type] || type}</Tag>
                         {record.stockSymbol && <Typography.Text type="secondary" style={{ fontSize: 12 }}>{record.stockSymbol} x {record.quantity}</Typography.Text>}
                     </Space>
                 );
@@ -163,8 +173,10 @@ const Accounts: React.FC = () => {
     return (
         <div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <Title level={2} style={{ margin: 0 }}>Accounts</Title>
-                <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>Add Account</Button>
+                <Title level={2} style={{ margin: 0 }}>{isInvestmentMode ? 'Investasi' : 'Accounts'}</Title>
+                <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+                    {isInvestmentMode ? 'Tambah Investasi' : 'Add Account'}
+                </Button>
             </div>
 
             <Table 
@@ -190,7 +202,9 @@ const Accounts: React.FC = () => {
                     return (
                         <Table.Summary.Row style={{ background: '#fafafa' }}>
                             <Table.Summary.Cell index={0} colSpan={2}>
-                                <div style={{ textAlign: 'right', paddingRight: 16 }}><strong>Total All Accounts:</strong></div>
+                                <div style={{ textAlign: 'right', paddingRight: 16 }}>
+                                    <strong>{isInvestmentMode ? 'Total Semua Investasi:' : 'Total All Accounts:'}</strong>
+                                </div>
                             </Table.Summary.Cell>
                             <Table.Summary.Cell index={2}>
                                 <Typography.Text strong>
@@ -204,12 +218,12 @@ const Accounts: React.FC = () => {
             />
 
             <Modal
-                title={editingId ? "Edit Account" : "Add Account"}
+                title={editingId ? (isInvestmentMode ? 'Edit Investasi' : 'Edit Account') : (isInvestmentMode ? 'Tambah Investasi' : 'Add Account')}
                 open={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 footer={null}
             >
-                <Form form={form} layout="vertical" onFinish={onFinish} initialValues={{ type: 'CASH' }}>
+                <Form form={form} layout="vertical" onFinish={onFinish} initialValues={{ type: defaultType }}>
                     <Form.Item name="name" label="Account Name" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
@@ -218,13 +232,9 @@ const Accounts: React.FC = () => {
                     </Form.Item>
                     <Form.Item name="type" label="Type" rules={[{ required: true }]}>
                         <Select>
-                            <Option value="BANK">Bank</Option>
-                            <Option value="E_WALLET">E-Wallet</Option>
-                            <Option value="CASH">Cash</Option>
-                            <Option value="REKSADANA">Reksadana</Option>
-                            <Option value="SAHAM">Saham</Option>
-                            <Option value="CRYPTO">Crypto</Option>
-                            <Option value="OTHER">Other</Option>
+                            {visibleTypes.map((type) => (
+                                <Option key={type} value={type}>{TYPE_LABELS[type]}</Option>
+                            ))}
                         </Select>
                     </Form.Item>
                     

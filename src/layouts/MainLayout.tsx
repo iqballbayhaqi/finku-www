@@ -13,7 +13,8 @@ import {
   TagOutlined,
   SettingOutlined,
   CalendarOutlined,
-  MenuOutlined
+  MenuOutlined,
+  StockOutlined
 } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
@@ -33,6 +34,7 @@ const MainLayout: React.FC = () => {
         { key: '/planned-expenses', icon: <CalendarOutlined />, label: 'Planned Expenses' },
         { key: '/goals', icon: <FlagOutlined />, label: 'Goals' },
         { key: '/accounts', icon: <BankOutlined />, label: 'Accounts' },
+        { key: '/investments', icon: <StockOutlined />, label: 'Investasi' },
         { key: '/debts', icon: <WalletOutlined />, label: 'Debts' },
         { key: '/settings', icon: <SettingOutlined />, label: 'Settings' },
     ];
